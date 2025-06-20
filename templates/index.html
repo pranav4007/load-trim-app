@@ -6,27 +6,80 @@
 </head>
 <body>
     <h2>Enter Load & Trim Details</h2>
-    <form method="post">
+   
+
+       
+        <form method="post">
         <label>Select Aircraft:</label>
         <select name="regn" required>
             <option value="IAU">VT-IAU</option>
             <option value="NNN">VT-NNN</option>
             <option value="PSS">VT-PSS</option>
-        </select><br>
+        </select><br><br>
 
-        <label>Pilot Weight (kg):</label>
-        <input type="number" name="pilot_weight" step="0.1" required><br>
 
-        <label>Co-Pilot / Pax Weight (kg):</label>
-        <input type="number" name="pax_weight" step="0.1" required><br>
+        <label>Pilot Weight:</label><br>
+            <input type="text" name="pilot_weight_lbs" id="pilot_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToKg()">
+            <input type="text" id="pilot_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToLbs()"><br><br>
+
+        <label>Co-Pilot / Pax Weight:</label><br>
+            <input type="text" name="pax_weight_lbs" id="pax_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToKg()">
+            <input type="text" id="pax_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToLbs()"><br><br>
+
 
         <label>Left Tank Fuel (litres):</label>
-        <input type="number" name="fuel_left" step="0.1" required><br>
+        <input type="number" name="fuel_left" step="1" required><br><br>
 
         <label>Right Tank Fuel (litres):</label>
-        <input type="number" name="fuel_right" step="0.1" required><br>
+        <input type="number" name="fuel_right" step="1" required><br><br>
 
         <button type="submit">Generate Trim Sheet</button>
     </form>
+
+  <div class="golden-signature">
+    Built by <span>Pranav Sawarkar</span> | 
+    <a href="https://instagram.com/pranav_4007" target="_blank">@pranav_4007</a>
+</div>
+
+
+
 </body>
 </html>
+
+<script>
+function convertPilotToKg() {
+    let lbs = parseFloat(document.getElementById("pilot_weight_lbs").value);
+    if (!isNaN(lbs)) {
+        document.getElementById("pilot_weight_kg").value = (lbs * 0.45).toFixed(2);
+    } else {
+        document.getElementById("pilot_weight_kg").value = '';
+    }
+}
+
+function convertPilotToLbs() {
+    let kg = parseFloat(document.getElementById("pilot_weight_kg").value);
+    if (!isNaN(kg)) {
+        document.getElementById("pilot_weight_lbs").value = (kg * 2.2).toFixed(2);
+    } else {
+        document.getElementById("pilot_weight_lbs").value = '';
+    }
+}
+
+function convertPaxToKg() {
+    let lbs = parseFloat(document.getElementById("pax_weight_lbs").value);
+    if (!isNaN(lbs)) {
+        document.getElementById("pax_weight_kg").value = (lbs * 0.45).toFixed(2);
+    } else {
+        document.getElementById("pax_weight_kg").value = '';
+    }
+}
+
+function convertPaxToLbs() {
+    let kg = parseFloat(document.getElementById("pax_weight_kg").value);
+    if (!isNaN(kg)) {
+        document.getElementById("pax_weight_lbs").value = (kg * 2.2).toFixed(2);
+    } else {
+        document.getElementById("pax_weight_lbs").value = '';
+    }
+}
+</script>

@@ -2,28 +2,22 @@ from flask import Flask, render_template, request, send_file
 from openpyxl import load_workbook
 from datetime import datetime
 import os
-from reportlab.lib.pagesizes import landscape, A4
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
 
 app = Flask(__name__)
 generated_file = "generated/updated_trim.xlsx"
-generated_pdf = "generated/trim_sheet.pdf"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         regn = request.form['regn']
-        pilot_weight = float(request.form['pilot_weight'])
-        pax_weight = float(request.form['pax_weight'])
+        pilot_weight = float(request.form['pilot_weight_lbs'])
+        pax_weight = float(request.form['pax_weight_lbs'])
         fuel_left = float(request.form['fuel_left'])
         fuel_right = float(request.form['fuel_right'])
 
         wb = load_workbook('master_trim.xlsx')
         ws = wb.active
 
-        # Your existing Excel processing code...
         ws["B1"] = datetime.now().strftime("%d/%m/%Y")
         ws["E2"] = regn
 
@@ -75,57 +69,19 @@ def index():
         cg_val = ws["C21"].value
         ws["G21"] = "Y" if cg_val is not None and 31 <= cg_val <= 36.5 else "N"
 
-        # Save to downloadable file
+        # Save to downloadable Excel file
         os.makedirs("generated", exist_ok=True)
         wb.save(generated_file)
 
-        # Create PDF version
-        create_pdf(ws)
-        
-        # Prepare display data
+        # Prepare display data for table preview
         data = [[cell.value for cell in row] for row in ws.iter_rows(min_row=1, max_row=24, max_col=7)]
-        return render_template("table.html", data=data, pdf_available=True)
+        return render_template("table.html", data=data, excel_available=True)
 
     return render_template("index.html")
 
-def create_pdf(worksheet):
-    # Prepare data for PDF
-    data = []
-    for row in worksheet.iter_rows(min_row=1, max_row=24, max_col=7):
-        data.append([str(cell.value) if cell.value is not None else "" for cell in row])
-
-    # Create PDF
-    doc = SimpleDocTemplate(generated_pdf, pagesize=landscape(A4))
-    elements = []
-    
-    # Title
-    styles = getSampleStyleSheet()
-    title = Paragraph("Aircraft Trim Sheet", styles['Title'])
-    elements.append(title)
-    
-    # Create table
-    table = Table(data)
-    
-    # Add style
-    style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('FONTSIZE', (0, 1), (-1, -1), 8),
-    ])
-    table.setStyle(style)
-    
-    elements.append(table)
-    doc.build(elements)
-
-@app.route('/download_pdf')
-def download_pdf():
-    return send_file(generated_pdf, as_attachment=True)
+@app.route('/download_excel')
+def download_excel():
+    return send_file(generated_file, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

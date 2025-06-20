@@ -18,8 +18,21 @@
         </tbody>
     </table>
     <br>
-    <a href="/download" class="btn btn-success" style="margin: 10px;">Download Excel Sheet</a>
+    {% if excel_available %}
+    <div class="center-button">
+    <a href="{{ url_for('download_excel') }}" class="download-button">⬇ Download Excel Sheet</a>
+</div>
 
-    <a href="/">← Back to Input</a>
+    {% endif %}
+
+
+    <a href="/" class="back-button">← Back to Input</a>
+
+    
+  <div class="golden-signature">
+    Built by <span>Pranav Sawarkar</span> | 
+    <a href="https://instagram.com/pranav_4007" target="_blank">@pranav_4007</a>
+</div>
+
 </body>
 </html>
