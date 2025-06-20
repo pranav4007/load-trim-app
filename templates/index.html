@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Load & Trim Input</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Enter Load & Trim Details</h2>
+    <form method="post">
+        <label>Select Aircraft:</label>
+        <select name="regn" required>
+            <option value="IAU">VT-IAU</option>
+            <option value="NNN">VT-NNN</option>
+            <option value="PSS">VT-PSS</option>
+        </select><br>
+
+        <label>Pilot Weight (kg):</label>
+        <input type="number" name="pilot_weight" step="0.1" required><br>
+
+        <label>Co-Pilot / Pax Weight (kg):</label>
+        <input type="number" name="pax_weight" step="0.1" required><br>
+
+        <label>Left Tank Fuel (litres):</label>
+        <input type="number" name="fuel_left" step="0.1" required><br>
+
+        <label>Right Tank Fuel (litres):</label>
+        <input type="number" name="fuel_right" step="0.1" required><br>
+
+        <button type="submit">Generate Trim Sheet</button>
+    </form>
+</body>
+</html>

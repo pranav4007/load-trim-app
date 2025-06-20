@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trim Sheet Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Trim Sheet - Calculated</h2>
+    <table border="1">
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell if cell is not none else "" }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/download" class="btn btn-success" style="margin: 10px;">Download Excel Sheet</a>
+
+    <a href="/">← Back to Input</a>
+</body>
+</html>
