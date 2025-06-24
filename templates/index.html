@@ -126,8 +126,15 @@
 
   <script>
 function showDisclaimer() {
-    const message = `⚠️ DISCLAIMER\n\nThis Load and Trim tool s shared here for educational and reference purposes only.\n\nWhile care has been taken to ensure the accuracy of the calculations, users are solely responsible for verifying all values and results manually and shall not use in any official, operational or training context.\n\nThe developer accepts no liability for any errors, omissions, or consequences arising from the use of this tool.\n\n☑️ By using this website, you acknowledge and accept these terms.`;
+  const message = `⚠️ DISCLAIMER
 
+This Load and Trim tool is shared here purely for educational and reference purposes.
+
+While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+
+The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
+
+☑️ By proceeding, you acknowledge and accept these terms.`;
     if (confirm(message)) {
         document.querySelector('form').submit();
     } else {
@@ -156,7 +163,15 @@ function validateAndShowDisclaimer() {
     }
 
     // Now show disclaimer
-    const message = `⚠️ DISCLAIMER\n\nThis Load and Trim tool s shared here for educational and reference purposes only.\n\nWhile care has been taken to ensure the accuracy of the calculations, users are solely responsible for verifying all values and results manually and shall not use in any official, operational or training context.\n\nThe developer accepts no liability for any errors, omissions, or consequences arising from the use of this tool.\n\n☑️ By using this website, you acknowledge and accept these terms.`;
+ const message = `⚠️ DISCLAIMER
+
+This Load and Trim tool is shared here purely for educational and reference purposes.
+
+While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+
+The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
+
+☑️ By proceeding, you acknowledge and accept these terms.`;
 
     if (confirm(message)) {
         form.submit();
