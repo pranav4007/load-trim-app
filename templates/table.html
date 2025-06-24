@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <audio id="clickSound" src="/static/click.mp3" preload="auto"></audio>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trim Sheet Result</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    td {
+      padding: 8px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .center-button, .back-button {
+      display: block;
+      margin: 20px auto;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 10px 20px;
+      background-color: #2563eb;
+      color: white;
+      border-radius: 6px;
+      max-width: 90%;
+    }
+
+    .golden-signature {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: gold;
+    }
+
+    .golden-signature span {
+      font-weight: bold;
+    }
+
+    .golden-signature a {
+      color: gold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculated - Trim Sheet</h2>
+
+  <div class="table-container">
+    <table>
+      <tbody>
+        {% for row in data %}
+          <tr>
+            {% for cell in row %}
+              <td>{{ cell if cell is not none else "" }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if excel_available %}
+    <a href="{{ url_for('download_excel') }}" class="center-button">⬇ Download Excel Sheet</a>
+  {% endif %}
+
+  <a href="/" class="back-button">← Back to Input</a>
+
+  <div class="golden-signature">
+    Built by <span>Pranav Sawarkar</span> |
+    <a href="https://instagram.com/pranav_4007" target="_blank">@pranav_4007</a>
+  </div>
+
+  <script>
+  const clickSound = document.getElementById("clickSound");
+
+  document.addEventListener("click", function () {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => {
+      console.log("Sound play blocked:", e);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <audio id="clickSound" src="/static/sounds/click.wav" preload="auto"></audio>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Load & Trim Input</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, select, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .golden-signature {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: gold;
+    }
+
+    .golden-signature span {
+      font-weight: bold;
+    }
+
+    .golden-signature a {
+      color: gold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Enter Load & Trim Details</h2>
+
+  <form method="post">
+    <label>Select Aircraft:</label>
+    <select name="regn" required>
+      <option value="IAU">VT-IAU</option>
+      <option value="NNN">VT-NNN</option>
+      <option value="PSS">VT-PSS</option> 
+      <option value="PFA">VT-PFA</option>
+      <option value="AGH">VT-AGH</option>           
+    </select>
+
+    <label>Pilot Weight:</label>
+    <input type="text" name="pilot_weight_lbs" id="pilot_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToKg()">
+    <input type="text" id="pilot_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToLbs()">
+
+    <label>Co-Pilot / Pax Weight:</label>
+    <input type="text" name="pax_weight_lbs" id="pax_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToKg()">
+    <input type="text" id="pax_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToLbs()">
+
+    <label>Left Tank Fuel (litres):</label>
+    <input type="number" name="fuel_left" required>
+
+    <label>Right Tank Fuel (litres):</label>
+    <input type="number" name="fuel_right" required>
+
+    <button type="button" onclick="validateAndShowDisclaimer()">Generate Trim Sheet</button>
+
+
+  </form>
+
+  <div class="golden-signature">
+    Built by <span>Pranav Sawarkar</span> | 
+    <a href="https://instagram.com/pranav_4007" target="_blank">@pranav_4007</a>
+  </div>
+
+  <script>
+    function convertPilotToKg() {
+      let lbs = parseFloat(document.getElementById("pilot_weight_lbs").value);
+      document.getElementById("pilot_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertPilotToLbs() {
+      let kg = parseFloat(document.getElementById("pilot_weight_kg").value);
+      document.getElementById("pilot_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
+
+    function convertPaxToKg() {
+      let lbs = parseFloat(document.getElementById("pax_weight_lbs").value);
+      document.getElementById("pax_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertPaxToLbs() {
+      let kg = parseFloat(document.getElementById("pax_weight_kg").value);
+      document.getElementById("pax_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
+  </script>
+
+  <script>
+function showDisclaimer() {
+    const message = `⚠️ DISCLAIMER\n\nThis Load and Trim tool s shared here for educational and reference purposes only.\n\nWhile care has been taken to ensure the accuracy of the calculations, users are solely responsible for verifying all values and results manually and shall not use in any official, operational or training context.\n\nThe developer accepts no liability for any errors, omissions, or consequences arising from the use of this tool.\n\n☑️ By using this website, you acknowledge and accept these terms.`;
+
+    if (confirm(message)) {
+        document.querySelector('form').submit();
+    } else {
+        alert("Submission cancelled.");
+    }
+}
+</script>
+
+<script>
+function validateAndShowDisclaimer() {
+    const form = document.querySelector("form");
+
+    // Check all required inputs are filled
+    const requiredFields = form.querySelectorAll("[required]");
+    let allFilled = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            allFilled = false;
+        }
+    });
+
+    if (!allFilled) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    // Now show disclaimer
+    const message = `⚠️ DISCLAIMER\n\nThis Load and Trim tool was originally developed for personal use, and is shared here for educational and reference purposes only.\n\nWhile care has been taken to ensure the accuracy of the calculations, users are solely responsible for verifying all values and results manually and shall not use in any official, operational or training context.\n\nThe developer accepts no liability for any errors, omissions, or consequences arising from the use of this tool.\n\n☑️ By using this website, you acknowledge and accept these terms.\n\nDo you agree?`;
+
+    if (confirm(message)) {
+        form.submit();
+    } else {
+        alert("Submission cancelled.");
+    }
+}
+</script>
+
+<script>
+// Play sound
+function playClickSound() {
+    const sound = document.getElementById("clickSound");
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+    }
+}
+
+// Enhance all buttons with sound
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll("button, a");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", playClickSound);
+    });
+});
+</script>
+
+
+  
+</body>
+</html>
