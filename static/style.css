@@ -144,9 +144,9 @@ a:hover {
 
 .golden-signature {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 14px;
+    bottom: 5px;
+    right: 5px;
+    font-size: 11px;
     font-family: 'Segoe UI', sans-serif;
     color: #ffd700;
     z-index: 999;
