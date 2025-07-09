@@ -75,10 +75,10 @@ def generate_trim_sheet_172(regn, pilot_weight, pax_weight, fuel_left, fuel_righ
 
     ws["B1"] = datetime.now().strftime("%d/%m/%Y")
 
-    if regn == "VAGH":
+    if regn == "AGH":
         ws["D2"] = "VT-AGH"
         c5, e5 = 1697, 39.29
-    elif regn == "VPFA":
+    elif regn == "PFA":
         ws["D2"] = "VT-PFA"
         c5, e5 = 1701, 38.79
     else:
