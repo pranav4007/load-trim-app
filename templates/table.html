@@ -120,56 +120,24 @@
 {% if status_152 == "N" %}
     {% set excesspounds = auw_152 - 1670 %}
     {% set excessfuelinliter = (excesspounds / 1.58) | round(2) %}
-    <div style="
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #ff4d4d;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    z-index: 1000;
-    animation: blink 1s infinite;
-">
-    AUW exceeded by {{ excesspounds }} lbs.<br>
-    {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
-</div>
-
-<style>
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-</style>
+     <div style="position: fixed; top: 20px; right: 20px; background-color: #ff4d4d; color: white; font-weight: bold; padding: 10px 20px; border-radius: 8px; animation: flash 1s infinite; z-index: 1000;">
+    AUW exceeded by {{ excesspounds }} lbs. {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
+    </div>
 
 {% elif status_172 == "N" %}
     {% set excesspounds = auw_172 - 2550 %}
     {% set excessfuelinliter = (excesspounds / 1.58) | round(2) %}
-    <div style="
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #ff4d4d;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    z-index: 1000;
-    animation: blink 1s infinite;
-">
-    AUW exceeded by {{ excesspounds }} lbs.<br>
-    {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
-</div>
+    <div style="position: fixed; top: 20px; right: 20px; background-color: #ff4d4d; color: white; font-weight: bold; padding: 10px 20px; border-radius: 8px; animation: flash 1s infinite; z-index: 1000;">
+    AUW exceeded by {{ excesspounds }} lbs. {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
+    </div>
 
 <style>
-@keyframes blink {
+@keyframes flash {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    50% { opacity: 0.4; }
 }
 </style>
+
 
 {% endif %}
 
