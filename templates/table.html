@@ -118,16 +118,58 @@
 {% set status_172 = data[20][6] %}
 
 {% if status_152 == "N" %}
-    {% set excessfuelinpounds = auw_152 - 1670 %}
-    {% set excessfuelinliter = (excessfuelinpounds / 1.58) | round(2) %}
-    <div style="margin-top: 20px; color: red; font-weight: bold;">
-        Reduce total fuel by approx {{ excessfuelinliter }} liters to stay within all-up weight limit (C152).
-    </div>
+    {% set excesspounds = auw_152 - 1670 %}
+    {% set excessfuelinliter = (excesspounds / 1.58) | round(2) %}
+    <div style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: blink 1s infinite;
+">
+    AUW exceeded by {{ excesspounds }} lbs.<br>
+    {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
+</div>
+
+<style>
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+</style>
+
 {% elif status_172 == "N" %}
-    {% set excessfuelinpounds = auw_172 - 2550 %}
-    {% set excessfuelinliter = (excessfuelinpounds / 1.58) | round(2) %}
-    <div style="margin-top: 20px; color: red; font-weight: bold;">
-        Reduce total fuel by approx {{ excessfuelinliter }} liters to stay within all-up weight limit (C172).
-    </div>
+    {% set excesspounds = auw_172 - 2550 %}
+    {% set excessfuelinliter = (excesspounds / 1.58) | round(2) %}
+    <div style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: blink 1s infinite;
+">
+    AUW exceeded by {{ excesspounds }} lbs.<br>
+    {{ excesspounds }} lbs is equal to {{ excessfuelinliter }} liters.
+</div>
+
+<style>
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+</style>
+
 {% endif %}
 
