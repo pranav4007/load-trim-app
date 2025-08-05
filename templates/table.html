@@ -122,7 +122,7 @@
     {% set pax = data[6][2] %}
     {% set pilotkg = (pilot / 2.2) | round(2) %}
     {% set paxkg = (pax / 2.2) | round(2) %}
-    {% set zerofuel = data[4][2] %}
+    {% set zerofuel = data[17][1] %}
     {% set maxfuellbs = 1670 - zerofuel %}
     {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
 
@@ -132,17 +132,48 @@
     {% set pax = data[6][2] %}
     {% set pilotkg = (pilot / 2.2) | round(2) %}
     {% set paxkg = (pax / 2.2) | round(2) %}
-    {% set zerofuel = data[4][2] %}
+    {% set zerofuel = data[18][1] %}
     {% set maxfuellbs = 2550 - zerofuel %}
     {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
 {% endif %}
 
 <!-- Display block in top-right corner -->
-<div style="position: absolute; top: 10px; right: 10px; font-weight: bold; background: none; padding: 10px; border: 1px solid #ccc;">
-    A/C Reg: {{ reg }} <br>
-    Pilot: {{ pilot }} lbs | {{ pilotkg }} kg <br>
-    Co-Pilot: {{ pax }} lbs | {{ paxkg }} kg <br>
-    Max Total Fuel : {{ maxfuellit }} liters
+<style>
+  .info-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 16px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 280px;
+    z-index: 1000;
+  }
+
+  .info-panel strong {
+    color: #ffffff;
+    display: inline-block;
+    width: 120px;
+  }
+
+  body {
+    background: #0e0e1f; /* Optional: dark theme background */
+  }
+</style>
+
+<div class="info-panel">
+  <div><strong>A/C Reg:</strong> {{ reg }}</div>
+  <div><strong>Pilot:</strong> {{ pilot }} lbs | {{ pilotkg }} kg</div>
+  <div><strong>Co-Pilot:</strong> {{ pax }} lbs | {{ paxkg }} kg</div>
+  <div><strong>Max Fuel:</strong> {{ maxfuellit }} L (L+R)</div>
 </div>
+
 
 
