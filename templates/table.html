@@ -120,8 +120,8 @@
     {% set reg = data[1][4] %}
     {% set pilot = data[5][2] %}
     {% set pax = data[6][2] %}
-    {% set pilotkg = pilot / 2.2 | round(2) %}
-    {% set paxkg = pax / 2.2 | round(2) %}
+    {% set pilotkg = (pilot / 2.2) | round(2) %}
+    {% set paxkg = (pax / 2.2) | round(2) %}
     {% set zerofuel = data[4][2] %}
     {% set mtow = 1670 %}
     {% set maxfuellbs = mtow - zerofuel %}
@@ -131,8 +131,8 @@
     {% set reg = data[1][3] %}
     {% set pilot = data[5][2] %}
     {% set pax = data[6][2] %}
-    {% set pilotkg = pilot / 2.2 | round(2) %}
-    {% set paxkg = pax / 2.2 | round(2) %}
+    {% set pilotkg = (pilot / 2.2) | round(2) %}
+    {% set paxkg = (pax / 2.2) | round(2) %}
     {% set zerofuel = data[4][2] %}
     {% set mtow = 2550 %}
     {% set maxfuellbs = mtow - zerofuel %}
