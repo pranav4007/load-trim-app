@@ -137,7 +137,7 @@
     {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
 {% endif %}
 
-<!-- Insert this just below the table and above the download button -->
+<!-- Replace your current style + info-panel div with this -->
 <style>
   .info-panel {
     margin: 20px auto 0 auto;
@@ -152,32 +152,44 @@
     color: #e0e0e0;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     max-width: 90%;
-    text-align: left;
     background-color: #1a1a2e;
   }
 
-  .info-panel div {
-    margin-bottom: 6px;
+  .info-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
   }
 
-  .info-panel strong {
+  .info-label {
+    font-weight: bold;
     color: #ffffff;
-    display: inline-block;
-    width: 160px;
+    margin-right: 10px;
+    min-width: 110px;
+  }
+
+  .info-value {
+    flex: 1;
+  }
+
+  @media (max-width: 480px) {
+    .info-row {
+      flex-direction: column;
+    }
+
+    .info-label {
+      margin-bottom: 4px;
+    }
   }
 
   body {
-    background-color: #0f172a; /* Optional dark background for futuristic feel */
+    background-color: #0f172a;
   }
 </style>
 
 <div class="info-panel">
-  <div><strong>A/C Reg:</strong> {{ reg }}</div>
-  <div><strong>Pilot:</strong> {{ pilot }} lbs | {{ pilotkg }} kg</div>
-  <div><strong>Co-Pilot:</strong> {{ pax }} lbs | {{ paxkg }} kg</div>
-  <div><strong>Max Fuel (L+R):</strong> {{ maxfuellit }} liters</div>
+  <div class="info-row"><span class="info-label">A/C Reg:</span><span class="info-value">{{ reg }}</span></div>
+  <div class="info-row"><span class="info-label">Pilot:</span><span class="info-value">{{ pilot }} lbs | {{ pilotkg }} kg</span></div>
+  <div class="info-row"><span class="info-label">Co-Pilot:</span><span class="info-value">{{ pax }} lbs | {{ paxkg }} kg</span></div>
+  <div class="info-row"><span class="info-label">Max Fuel (L+R):</span><span class="info-value">{{ maxfuellit }} liters</span></div>
 </div>
-
-
-
-
