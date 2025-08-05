@@ -111,3 +111,23 @@
 
 </body>
 </html>
+
+{% set weight_152 = data[19][2] %}
+{% set status_152 = data[19][6] %}
+{% set weight_172 = data[20][2] %}
+{% set status_172 = data[20][6] %}
+
+{% if status_152 == "N" %}
+    {% set excess = weight_152 - 1670 %}
+    {% set gal = (excess / 1.58) | round(2) %}
+    <div style="margin-top: 20px; color: red; font-weight: bold;">
+        Recommendation: Reduce total fuel by approx {{ gal }} gallons to stay within all-up weight limit (C152).
+    </div>
+{% elif status_172 == "N" %}
+    {% set excess = weight_172 - 2550 %}
+    {% set gal = (excess / 1.58) | round(2) %}
+    <div style="margin-top: 20px; color: red; font-weight: bold;">
+        Recommendation: Reduce total fuel by approx {{ gal }} gallons to stay within all-up weight limit (C172).
+    </div>
+{% endif %}
+
