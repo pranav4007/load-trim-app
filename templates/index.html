@@ -68,15 +68,18 @@
 <body>
   <h2>Enter Load & Trim Details</h2>
 
-  <form method="post">
-    <label>Select Aircraft:</label>
-    <select name="regn" required>
-      <option value="IAU">VT-IAU</option>
-      <option value="NNN">VT-NNN</option>
-      <option value="PSS">VT-PSS</option> 
-      <option value="PFA">VT-PFA</option>
-      <option value="AGH">VT-AGH</option>           
-    </select>
+<form method="post">
+  <label>Select Aircraft:</label>
+  <select name="regn" required>
+    <option value="" disabled selected>-- Select Aircraft --</option>
+    <option value="IAU">VT-IAU</option>
+    <option value="NNN">VT-NNN</option>
+    <option value="PSS">VT-PSS</option>
+    <option value="PFA">VT-PFA</option>
+    <option value="AGH">VT-AGH</option>
+  </select>
+</form>
+
 
     <label>Pilot Weight:</label>
     <input type="text" name="pilot_weight_lbs" id="pilot_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToKg()">
