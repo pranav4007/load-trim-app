@@ -120,29 +120,31 @@
     {% set reg = data[1][4] %}
     {% set pilot = data[5][2] %}
     {% set pax = data[6][2] %}
+    {% set pilotkg = pilot / 2.2 | round(2) %}
+    {% set paxkg = pax / 2.2 | round(2) %}
     {% set zerofuel = data[4][2] %}
     {% set mtow = 1670 %}
     {% set maxfuellbs = mtow - zerofuel %}
     {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
-    {% set maxfuelrounded = (maxfuellit // 5 * 5) | int %}
 
 {% elif ac_type == "C172" %}
     {% set reg = data[1][3] %}
     {% set pilot = data[5][2] %}
     {% set pax = data[6][2] %}
+    {% set pilotkg = pilot / 2.2 | round(2) %}
+    {% set paxkg = pax / 2.2 | round(2) %}
     {% set zerofuel = data[4][2] %}
     {% set mtow = 1670 %}
     {% set maxfuellbs = mtow - zerofuel %}
     {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
-    {% set maxfuelrounded = (maxfuellit // 5 * 5) | int %}
 {% endif %}
 
-<!-- Display block in top-left corner -->
-<div style="position: absolute; top: 10px; left: 10px; font-weight: bold; background: #f0f0f0; padding: 10px; border: 1px solid #ccc;">
+<!-- Display block in top-right corner -->
+<div style="position: absolute; top: 10px; right: 10px; font-weight: bold; background: none; padding: 10px; border: 1px solid #ccc;">
     A/C Reg: {{ reg }} <br>
-    Pilot: {{ pilot }} lbs <br>
-    Co-Pilot: {{ pax }} lbs <br>
-    Max Fuel (rounded): {{ maxfuelrounded }} liters
+    Pilot: {{ pilot }} lbs | {{ pilotkg }} kg <br>
+    Co-Pilot: {{ pax }} lbs | {{ paxkg }} kg <br>
+    Max Total Fuel : {{ maxfuellit }} liters
 </div>
 
 
