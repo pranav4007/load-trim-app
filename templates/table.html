@@ -124,7 +124,9 @@
     {% set paxkg = (pax / 2.2) | round(2) %}
     {% set zerofuel = data[17][1] %}
     {% set maxfuellbs = 1670 - zerofuel %}
-    {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
+    {% set raw_maxfuellit = (maxfuellbs / 1.58) %}
+{% set maxfuellit = (raw_maxfuellit if raw_maxfuellit <= 100 else 100) | round(2) %}
+
 
 {% elif ac_type == "C172" %}
     {% set reg = data[1][3] %}
@@ -134,7 +136,8 @@
     {% set paxkg = (pax / 2.2) | round(2) %}
     {% set zerofuel = data[18][1] %}
     {% set maxfuellbs = 2550 - zerofuel %}
-    {% set maxfuellit = (maxfuellbs / 1.58) | round(2) %}
+    {% set raw_maxfuellit = (maxfuellbs / 1.58) %}
+{% set maxfuellit = (raw_maxfuellit if raw_maxfuellit <= 200 else 200) | round(2) %}
 {% endif %}
 
 <!-- Replace your current style + info-panel div with this -->
