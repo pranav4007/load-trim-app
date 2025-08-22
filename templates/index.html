@@ -8,7 +8,7 @@
   <title>Load & Trim Input</title>
   <link rel="stylesheet" href="/static/style.css" />
   <style>
-    
+    /* ===== your original styles (unchanged) ===== */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -63,22 +63,115 @@
       color: gold;
       text-decoration: none;
     }
+
+    /* ===== universe background + meteors (added) ===== */
+    .sky-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;              /* behind your content */
+      pointer-events: none;     /* never block clicks */
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 120%, #1b2735 0%, #090a0f 60%, #000 100%);
+    }
+
+    /* two subtle star layers drifting for parallax */
+    .sky-stars,
+    .sky-stars.layer2 {
+      position: absolute;
+      inset: -50% -50%;  /* larger than viewport for drift */
+      opacity: 0.6;
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.7) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.6) 50%, transparent 52%),
+        radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.7) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 45% 70%, rgba(255,255,255,0.75) 50%, transparent 52%),
+        radial-gradient(1px 1px at 85% 85%, rgba(255,255,255,0.6) 50%, transparent 52%);
+      background-size: 400px 400px;
+      animation: starsDrift 120s linear infinite;
+    }
+
+    .sky-stars.layer2 {
+      opacity: 0.35;
+      filter: blur(0.3px);
+      animation-duration: 180s;
+    }
+
+    @keyframes starsDrift {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(0, -120px, 0); }
+    }
+
+    /* meteor streaks */
+    .meteor {
+      --x: 50%;
+      --delay: 0s;
+      --dur: 3.5s;
+
+      position: fixed;
+      top: -12vh;               /* start above viewport */
+      left: var(--x);
+      width: 2px;
+      height: 16vh;
+      background: linear-gradient(45deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+      transform: rotate(45deg);
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
+      opacity: 0;
+      animation: meteorFall var(--dur) linear infinite;
+      animation-delay: var(--delay);
+      z-index: -1;              /* still behind content */
+    }
+
+    .meteor::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      filter: blur(2px);
+    }
+
+    @keyframes meteorFall {
+      0%   { transform: translate3d(0, 0, 0) rotate(45deg); opacity: 1; }
+      70%  { opacity: 1; }
+      100% { transform: translate3d(-70vw, 100vh, 0) rotate(45deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
+  <!-- universe background (behind everything) -->
+  <div class="sky-bg" aria-hidden="true">
+    <div class="sky-stars"></div>
+    <div class="sky-stars layer2"></div>
+
+    <!-- multiple meteors with varied positions, delays, and durations -->
+    <span class="meteor" style="--x: 15%; --delay: 0s;   --dur: 3.8s;"></span>
+    <span class="meteor" style="--x: 32%; --delay: 1.5s; --dur: 3.2s;"></span>
+    <span class="meteor" style="--x: 55%; --delay: 3.2s; --dur: 3.6s;"></span>
+    <span class="meteor" style="--x: 72%; --delay: 4.7s; --dur: 4.0s;"></span>
+    <span class="meteor" style="--x: 88%; --delay: 6.0s; --dur: 3.4s;"></span>
+    <span class="meteor" style="--x: 24%; --delay: 7.8s; --dur: 3.9s;"></span>
+    <span class="meteor" style="--x: 64%; --delay: 9.5s; --dur: 3.3s;"></span>
+    <span class="meteor" style="--x: 80%; --delay: 11s;  --dur: 3.7s;"></span>
+  </div>
+
   <h2>Enter Load & Trim Details</h2>
 
-<form method="post">
-  <label>Select Aircraft:</label>
-  <select name="regn" required>
-    <option value="" disabled selected>-- Select Aircraft --</option>
-    <option value="IAU">VT-IAU</option>
-    <option value="NNN">VT-NNN</option>
-    <option value="PSS">VT-PSS</option>
-    <option value="PFA">VT-PFA</option>
-    <option value="AGH">VT-AGH</option>
-  </select>
-
+  <form method="post">
+    <label>Select Aircraft:</label>
+    <select name="regn" required>
+      <option value="" disabled selected>-- Select Aircraft --</option>
+      <option value="IAU">VT-IAU</option>
+      <option value="NNN">VT-NNN</option>
+      <option value="PSS">VT-PSS</option>
+      <option value="PFA">VT-PFA</option>
+      <option value="AGH">VT-AGH</option>
+    </select>
 
     <label>Pilot Weight:</label>
     <input type="text" name="pilot_weight_lbs" id="pilot_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPilotToKg()">
@@ -95,8 +188,6 @@
     <input type="number" name="fuel_right" required>
 
     <button type="button" onclick="validateAndShowDisclaimer()">Generate Trim Sheet</button>
-
-
   </form>
 
   <div class="golden-signature">
@@ -203,7 +294,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-  
 </body>
 </html>
