@@ -1,12 +1,42 @@
 from flask import Flask, render_template, request, send_file
 from openpyxl import load_workbook
-from datetime import datetime
+from datetime import datetime, date
 import os
+import sqlite3
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
+socketio = SocketIO(app)
+
 generated_file = "generated/updated_trim.xlsx"
+live_users = 0
 
 
+# ===================== DATABASE HELPERS =====================
+def init_db():
+    conn = sqlite3.connect("stats.db")
+    c = conn.cursor()
+    c.execute("CREATE TABLE IF NOT EXISTS sheets (id INTEGER PRIMARY KEY, timestamp DATE)")
+    conn.commit()
+    conn.close()
+
+def log_sheet_generated():
+    conn = sqlite3.connect("stats.db")
+    c = conn.cursor()
+    c.execute("INSERT INTO sheets (timestamp) VALUES (?)", (date.today().isoformat(),))
+    conn.commit()
+    conn.close()
+
+def get_today_count():
+    conn = sqlite3.connect("stats.db")
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM sheets WHERE timestamp = ?", (date.today().isoformat(),))
+    count = c.fetchone()[0]
+    conn.close()
+    return count
+
+
+# ===================== TRIM SHEET GENERATORS =====================
 def generate_trim_sheet_152(regn, pilot_weight, pax_weight, fuel_left, fuel_right):
     wb = load_workbook('master_trim_152.xlsx')
     ws = wb.active
@@ -130,6 +160,7 @@ def generate_trim_sheet_172(regn, pilot_weight, pax_weight, fuel_left, fuel_righ
     return data
 
 
+# ===================== ROUTES =====================
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -146,6 +177,9 @@ def index():
         else:
             return "Invalid Aircraft Registration", 400
 
+        # Log the generation
+        log_sheet_generated()
+
         return render_template("table.html", data=data, excel_available=True)
 
     return render_template("index.html")
@@ -156,6 +190,27 @@ def download_excel():
     return send_file(generated_file, as_attachment=True)
 
 
+@app.route('/today_count')
+def today_count():
+    return {"today_count": get_today_count()}
+
+
+# ===================== SOCKET EVENTS =====================
+@socketio.on('connect')
+def handle_connect():
+    global live_users
+    live_users += 1
+    socketio.emit('update_user_count', live_users, broadcast=True)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    global live_users
+    live_users -= 1
+    socketio.emit('update_user_count', live_users, broadcast=True)
+
+
+# ===================== MAIN =====================
 if __name__ == "__main__":
+    init_db()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    socketio.run(app, host="0.0.0.0", port=port, debug=True)
