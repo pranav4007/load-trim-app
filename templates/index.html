@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <audio id="clickSound" src="/static/sounds/click.wav" preload="auto"></audio>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Load & Trim Input</title>
   <link rel="stylesheet" href="/static/style.css" />
-
-  <!-- 🎵 Sound assets -->
-  <audio id="clickSound" src="/static/sounds/click.wav" preload="auto"></audio>
-  <audio id="touchSound" src="/static/sounds/touch.wav" preload="auto"></audio>
-  <audio id="scrollSound" src="/static/sounds/drag.wav" preload="auto" loop></audio>
-
   <style>
-    /* ===== general styles ===== */
+    /* ===== your original styles (unchanged) ===== */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       max-width: 500px;
       margin: auto;
-      color: white;
-      position: relative;
-      z-index: 1; /* ensure above background */
     }
 
     form {
@@ -34,23 +27,13 @@
       margin-bottom: 15px;
       width: 100%;
       box-sizing: border-box;
-      border-radius: 6px;
-      border: 1px solid #555;
-      background: rgba(255,255,255,0.1);
-      color: white;
     }
 
     button {
       background-color: #2563eb;
       color: white;
       border: none;
-      border-radius: 8px;
-      transition: transform 0.15s ease;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      background-color: #1e40af;
+      border-radius: 6px;
     }
 
     input[type=number]::-webkit-inner-spin-button,
@@ -58,6 +41,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
+
     input[type=number] {
       -moz-appearance: textfield;
       -webkit-appearance: none;
@@ -80,20 +64,21 @@
       text-decoration: none;
     }
 
-    /* ===== background universe ===== */
+    /* ===== universe background + meteors (added) ===== */
     .sky-bg {
       position: fixed;
       inset: 0;
-      z-index: -1;
-      pointer-events: none;
+      z-index: -1;              /* behind your content */
+      pointer-events: none;     /* never block clicks */
       overflow: hidden;
       background: radial-gradient(ellipse at 50% 120%, #1b2735 0%, #090a0f 60%, #000 100%);
     }
 
+    /* two subtle star layers drifting for parallax */
     .sky-stars,
     .sky-stars.layer2 {
       position: absolute;
-      inset: -50% -50%;
+      inset: -50% -50%;  /* larger than viewport for drift */
       opacity: 0.6;
       background-image:
         radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,0.9) 50%, transparent 52%),
@@ -119,13 +104,14 @@
       to   { transform: translate3d(0, -120px, 0); }
     }
 
-    /* meteors */
+    /* meteor streaks */
     .meteor {
       --x: 50%;
       --delay: 0s;
       --dur: 3.5s;
+
       position: fixed;
-      top: -12vh;
+      top: -12vh;               /* start above viewport */
       left: var(--x);
       width: 2px;
       height: 16vh;
@@ -135,8 +121,9 @@
       opacity: 0;
       animation: meteorFall var(--dur) linear infinite;
       animation-delay: var(--delay);
-      z-index: -1;
+      z-index: -1;              /* still behind content */
     }
+
     .meteor::before {
       content: "";
       position: absolute;
@@ -148,6 +135,7 @@
       background: #fff;
       filter: blur(2px);
     }
+
     @keyframes meteorFall {
       0%   { transform: translate3d(0, 0, 0) rotate(45deg); opacity: 1; }
       70%  { opacity: 1; }
@@ -156,10 +144,12 @@
   </style>
 </head>
 <body>
-  <!-- background -->
+  <!-- universe background (behind everything) -->
   <div class="sky-bg" aria-hidden="true">
     <div class="sky-stars"></div>
     <div class="sky-stars layer2"></div>
+
+    <!-- multiple meteors with varied positions, delays, and durations -->
     <span class="meteor" style="--x: 15%; --delay: 0s;   --dur: 3.8s;"></span>
     <span class="meteor" style="--x: 32%; --delay: 1.5s; --dur: 3.2s;"></span>
     <span class="meteor" style="--x: 55%; --delay: 3.2s; --dur: 3.6s;"></span>
@@ -210,70 +200,99 @@
       let lbs = parseFloat(document.getElementById("pilot_weight_lbs").value);
       document.getElementById("pilot_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
     }
+
     function convertPilotToLbs() {
       let kg = parseFloat(document.getElementById("pilot_weight_kg").value);
       document.getElementById("pilot_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
     }
+
     function convertPaxToKg() {
       let lbs = parseFloat(document.getElementById("pax_weight_lbs").value);
       document.getElementById("pax_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
     }
+
     function convertPaxToLbs() {
       let kg = parseFloat(document.getElementById("pax_weight_kg").value);
       document.getElementById("pax_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
     }
-
-    function validateAndShowDisclaimer() {
-      const form = document.querySelector("form");
-      const requiredFields = form.querySelectorAll("[required]");
-      let allFilled = true;
-      requiredFields.forEach(field => { if (!field.value.trim()) allFilled = false; });
-      if (!allFilled) { alert("Please fill in all required fields."); return; }
-
-      const message = `⚠️ DISCLAIMER\n\nThis Load and Trim tool is shared here purely for educational and reference purposes.\n\nWhile we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.\n\nThe developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.\n\n☑️ By proceeding, you acknowledge and accept these terms.`;
-      if (confirm(message)) form.submit(); else alert("Submission cancelled.");
-    }
   </script>
 
   <script>
-    // sound helpers
-    function playSound(id) {
-      const sound = document.getElementById(id);
-      if (sound) {
-        sound.currentTime = 0;
-        sound.play();
-      }
+function showDisclaimer() {
+  const message = `⚠️ DISCLAIMER
+
+This Load and Trim tool is shared here purely for educational and reference purposes.
+
+While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+
+The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
+
+☑️ By proceeding, you acknowledge and accept these terms.`;
+    if (confirm(message)) {
+        document.querySelector('form').submit();
+    } else {
+        alert("Submission cancelled.");
+    }
+}
+</script>
+
+<script>
+function validateAndShowDisclaimer() {
+    const form = document.querySelector("form");
+
+    // Check all required inputs are filled
+    const requiredFields = form.querySelectorAll("[required]");
+    let allFilled = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            allFilled = false;
+        }
+    });
+
+    if (!allFilled) {
+        alert("Please fill in all required fields.");
+        return;
     }
 
-    // Touch & clicks
-    document.addEventListener("touchstart", () => playSound("touchSound"));
-    document.addEventListener("mousedown", () => playSound("touchSound"));
+    // Now show disclaimer
+ const message = `⚠️ DISCLAIMER
 
-    // Buttons/links get click sound
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("button, a").forEach(btn => {
-        btn.addEventListener("click", () => playSound("clickSound"));
-      });
-    });
+This Load and Trim tool is shared here purely for educational and reference purposes.
 
-    // Scroll / drag sound
-    let isScrolling = false;
-    let scrollTimeout;
-    window.addEventListener("scroll", () => {
-      const scrollSound = document.getElementById("scrollSound");
-      if (!isScrolling) {
-        isScrolling = true;
-        scrollSound.volume = 0.4; // subtle volume
-        scrollSound.currentTime = 0;
-        scrollSound.play();
-      }
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        scrollSound.pause();
-        scrollSound.currentTime = 0;
-        isScrolling = false;
-      }, 200); // stop shortly after scroll ends
+While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+
+The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
+
+☑️ By proceeding, you acknowledge and accept these terms.`;
+
+    if (confirm(message)) {
+        form.submit();
+    } else {
+        alert("Submission cancelled.");
+    }
+}
+</script>
+
+<script>
+// Play sound
+function playClickSound() {
+    const sound = document.getElementById("clickSound");
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play();
+    }
+}
+
+// Enhance all buttons with sound
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll("button, a");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", playClickSound);
     });
-  </script>
+});
+</script>
+
 </body>
 </html>
