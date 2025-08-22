@@ -63,16 +63,6 @@
       color: gold;
       text-decoration: none;
     }
-
-    .fuel-summary {
-      background: #f9fafb;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -99,17 +89,14 @@
     <input type="text" id="pax_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToLbs()">
 
     <label>Left Tank Fuel (litres):</label>
-    <input type="number" name="fuel_left" id="fuel_left" required>
+    <input type="number" name="fuel_left" required>
 
     <label>Right Tank Fuel (litres):</label>
-    <input type="number" name="fuel_right" id="fuel_right" required>
-
-    <!-- Fuel summary auto-update -->
-    <div class="fuel-summary" id="fuelSummary">
-      Total Fuel: 0 L (0 USG)
-    </div>
+    <input type="number" name="fuel_right" required>
 
     <button type="button" onclick="validateAndShowDisclaimer()">Generate Trim Sheet</button>
+
+
   </form>
 
   <div class="golden-signature">
@@ -213,24 +200,10 @@ document.addEventListener("DOMContentLoaded", function () {
     buttons.forEach(btn => {
         btn.addEventListener("click", playClickSound);
     });
-
-    // Fuel auto update
-    const leftInput = document.getElementById("fuel_left");
-    const rightInput = document.getElementById("fuel_right");
-    const summary = document.getElementById("fuelSummary");
-
-    function updateFuelSummary() {
-        const left = parseFloat(leftInput.value) || 0;
-        const right = parseFloat(rightInput.value) || 0;
-        const totalLitres = left + right;
-        const totalGallons = (totalLitres / 3.785).toFixed(2);
-        summary.textContent = `Total Fuel: ${totalLitres} L (${totalGallons} USG)`;
-    }
-
-    leftInput.addEventListener("input", updateFuelSummary);
-    rightInput.addEventListener("input", updateFuelSummary);
 });
 </script>
 
+
+  
 </body>
 </html>
