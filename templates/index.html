@@ -141,6 +141,14 @@
       70%  { opacity: 1; }
       100% { transform: translate3d(-70vw, 100vh, 0) rotate(45deg); opacity: 0; }
     }
+
+    /* DA40NG specific fields */
+    .da40-fields {
+      display: none;
+      border-left: 3px solid #2563eb;
+      padding-left: 15px;
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -164,13 +172,16 @@
 
   <form method="post">
     <label>Select Aircraft:</label>
-    <select name="regn" required>
+    <select name="regn" id="regn" required onchange="toggleDA40Fields()">
       <option value="" disabled selected>-- Select Aircraft --</option>
       <option value="IAU">VT-IAU</option>
       <option value="NNN">VT-NNN</option>
       <option value="PSS">VT-PSS</option>
       <option value="PFA">VT-PFA</option>
       <option value="AGH">VT-AGH</option>
+      <option value="PM">VT-PMA</option>
+      <option value="PRH">VT-PRH</option>
+      <option value="PFB">VT-PFB</option>
     </select>
 
     <label>Pilot Weight:</label>
@@ -180,6 +191,25 @@
     <label>Co-Pilot / Pax Weight:</label>
     <input type="text" name="pax_weight_lbs" id="pax_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToKg()">
     <input type="text" id="pax_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPaxToLbs()">
+
+    <!-- DA40NG Specific Fields -->
+    <div id="da40-fields" class="da40-fields">
+      <label>Rear Seat Pax 1 Weight:</label>
+      <input type="text" name="pax1_weight_lbs" id="pax1_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPax1ToKg()">
+      <input type="text" id="pax1_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPax1ToLbs()">
+
+      <label>Rear Seat Pax 2 Weight:</label>
+      <input type="text" name="pax2_weight_lbs" id="pax2_weight_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPax2ToKg()">
+      <input type="text" id="pax2_weight_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertPax2ToLbs()">
+
+      <label>Baggage Forward Weight:</label>
+      <input type="text" name="baggage_fwd_lbs" id="baggage_fwd_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertBaggageFwdToKg()">
+      <input type="text" id="baggage_fwd_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertBaggageFwdToLbs()">
+
+      <label>Baggage Aft Weight:</label>
+      <input type="text" name="baggage_aft_lbs" id="baggage_aft_lbs" placeholder="lbs" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertBaggageAftToKg()">
+      <input type="text" id="baggage_aft_kg" placeholder="kg" inputmode="decimal" pattern="^\d+(\.\d{1,2})?$" oninput="convertBaggageAftToLbs()">
+    </div>
 
     <label>Left Tank Fuel (litres):</label>
     <input type="number" name="fuel_left" required>
@@ -196,6 +226,19 @@
   </div>
 
   <script>
+  function toggleDA40Fields() {
+  const regn = document.getElementById('regn').value;
+  const da40Fields = document.getElementById('da40-fields');
+  
+  // Show DA40NG-specific fields for all DA40 aircraft
+  if (regn === 'PM' || regn === 'PRH' || regn === 'PFB') {
+    da40Fields.style.display = 'block';
+  } else {
+    da40Fields.style.display = 'none';
+  }
+}
+
+
     function convertPilotToKg() {
       let lbs = parseFloat(document.getElementById("pilot_weight_lbs").value);
       document.getElementById("pilot_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
@@ -215,6 +258,47 @@
       let kg = parseFloat(document.getElementById("pax_weight_kg").value);
       document.getElementById("pax_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
     }
+
+    // DA40NG specific conversion functions
+    function convertPax1ToKg() {
+      let lbs = parseFloat(document.getElementById("pax1_weight_lbs").value);
+      document.getElementById("pax1_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertPax1ToLbs() {
+      let kg = parseFloat(document.getElementById("pax1_weight_kg").value);
+      document.getElementById("pax1_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
+
+    function convertPax2ToKg() {
+      let lbs = parseFloat(document.getElementById("pax2_weight_lbs").value);
+      document.getElementById("pax2_weight_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertPax2ToLbs() {
+      let kg = parseFloat(document.getElementById("pax2_weight_kg").value);
+      document.getElementById("pax2_weight_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
+
+    function convertBaggageFwdToKg() {
+      let lbs = parseFloat(document.getElementById("baggage_fwd_lbs").value);
+      document.getElementById("baggage_fwd_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertBaggageFwdToLbs() {
+      let kg = parseFloat(document.getElementById("baggage_fwd_kg").value);
+      document.getElementById("baggage_fwd_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
+
+    function convertBaggageAftToKg() {
+      let lbs = parseFloat(document.getElementById("baggage_aft_lbs").value);
+      document.getElementById("baggage_aft_kg").value = !isNaN(lbs) ? (lbs / 2.2).toFixed(2) : '';
+    }
+
+    function convertBaggageAftToLbs() {
+      let kg = parseFloat(document.getElementById("baggage_aft_kg").value);
+      document.getElementById("baggage_aft_lbs").value = !isNaN(kg) ? (kg * 2.2).toFixed(2) : '';
+    }
   </script>
 
   <script>
@@ -223,7 +307,7 @@ function showDisclaimer() {
 
 This Load and Trim tool is shared here purely for educational and reference purposes.
 
-While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+While we've taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
 
 The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
 
@@ -260,7 +344,7 @@ function validateAndShowDisclaimer() {
 
 This Load and Trim tool is shared here purely for educational and reference purposes.
 
-While we’ve taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
+While we've taken care to ensure the accuracy of all calculations, it's important that users double-check every calculations manually before using it in any real-world scenario. This tool is not intended for official, operational, or training use.
 
 The developer shall not be held responsible for any errors, omissions, or outcomes resulting from its use.
 
