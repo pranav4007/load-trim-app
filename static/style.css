@@ -177,11 +177,12 @@ a:hover {
     100% {
         background-position: -200% center;
     }
-    <style>
-@keyframes flash {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-    }
-    </style>
 }
 
+/* DA40NG specific styles */
+.da40-fields {
+    border-left: 3px solid #2563eb;
+    padding-left: 15px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
