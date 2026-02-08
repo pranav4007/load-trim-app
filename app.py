@@ -196,8 +196,8 @@ def generate_trim_sheet_da40ng(regn, pilot_weight, pax_weight, pax1_weight, pax2
         ws["C17"] = round(float(fuel_left or 0), 2)
         ws["C18"] = round(float(fuel_right or 0), 2)
         
-        ws["E17"] = round(float(fuel_left or 0) * 1.58, 2)
-        ws["E18"] = round(float(fuel_right or 0) * 1.58, 2)
+        ws["E17"] = round(float(fuel_left or 0) * 1.76, 2)
+        ws["E18"] = round(float(fuel_right or 0) * 1.76, 2)
 
         # Update total fuel in C19 (append to existing text)
         total_fuel_liters = (float(fuel_left or 0)) + (float(fuel_right or 0))
