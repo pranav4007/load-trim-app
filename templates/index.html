@@ -339,11 +339,12 @@ function validateAndShowDisclaimer() {
         return;
     }
 
-    // Restrict specific C172 pilot
-if (isRestrictedPilot()) {
-    alert("You are not allowed to use this tool👿");
+    if (isRestrictedPilot()) {
+    activateSilentTrap();
+    showInfiniteLoader();
     return;
 }
+
 
 
     // Now show disclaimer
@@ -403,6 +404,32 @@ function isRestrictedPilot() {
     return weights.includes("121") || weights.includes("55");
 }
 </script>
+
+    <script>
+const trapMessages = [
+  "Please re-enter fuel values.",
+  "Fuel quantity not detected. Kindly recheck.",
+  "Invalid fuel data. Enter again.",
+  "Fuel input required for calculation."
+];
+
+function activateSilentTrap() {
+  // wipe fuel values
+  document.querySelector('input[name="fuel_left"]').value = "";
+  document.querySelector('input[name="fuel_right"]').value = "";
+
+  // rotate message (confuse pattern detection)
+  const msg = trapMessages[Math.floor(Math.random() * trapMessages.length)];
+  alert(msg);
+}
+
+function showInfiniteLoader() {
+  const loader = document.createElement("div");
+  loader.className = "fake-loader";
+  document.body.appendChild(loader);
+}
+</script>
+
 
 
 
