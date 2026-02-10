@@ -339,11 +339,27 @@ function validateAndShowDisclaimer() {
         return;
     }
 
-    if (isRestrictedPilot()) {
-    activateSilentTrap();
-    showInfiniteLoader();
-    return;
+   if (isRestrictedPilot()) {
+    restrictedAttemptCount++;
+
+    // FIRST attempt → 5 sec spinner, allow retry
+    if (restrictedAttemptCount === 1) {
+        wipeFuelInputs();
+
+        const msg = trapMessages[Math.floor(Math.random() * trapMessages.length)];
+        alert(msg);
+
+        showLoader(5000); // 5 seconds only
+        return;
+    }
+
+    // SECOND attempt → infinite spinner
+    if (restrictedAttemptCount >= 2) {
+        showLoader(); // no timeout = infinite
+        return;
+    }
 }
+
 
 
 
@@ -413,23 +429,30 @@ const trapMessages = [
   "Fuel input required for calculation."
 ];
 
-function activateSilentTrap() {
-  // wipe fuel values
+function wipeFuelInputs() {
   document.querySelector('input[name="fuel_left"]').value = "";
   document.querySelector('input[name="fuel_right"]').value = "";
-
-  // rotate message (confuse pattern detection)
-  const msg = trapMessages[Math.floor(Math.random() * trapMessages.length)];
-  alert(msg);
 }
 
-function showInfiniteLoader() {
+function showLoader(duration = null) {
   const loader = document.createElement("div");
   loader.className = "fake-loader";
+  loader.id = "fakeLoader";
   document.body.appendChild(loader);
+
+  // If duration is provided → remove loader after time
+  if (duration) {
+    setTimeout(() => {
+      loader.remove();
+    }, duration);
+  }
 }
 </script>
 
+
+<script>
+let restrictedAttemptCount = 0;
+</script>
 
 
 
