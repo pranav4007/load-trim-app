@@ -353,11 +353,11 @@ function validateAndShowDisclaimer() {
         return;
     }
 
-    // SECOND attempt → infinite spinner
     if (restrictedAttemptCount >= 2) {
-        showLoader(); // no timeout = infinite
-        return;
-    }
+    showLoader(null, true); // infinite loader + white background
+    return;
+}
+
 }
 
 
@@ -434,13 +434,19 @@ function wipeFuelInputs() {
   document.querySelector('input[name="fuel_right"]').value = "";
 }
 
-function showLoader(duration = null) {
+<script>
+function showLoader(duration = null, white = false) {
   const loader = document.createElement("div");
   loader.className = "fake-loader";
   loader.id = "fakeLoader";
+
+  if (white) {
+    loader.classList.add("white-bg");
+  }
+
   document.body.appendChild(loader);
 
-  // If duration is provided → remove loader after time
+  // Timed loader (first attempt)
   if (duration) {
     setTimeout(() => {
       loader.remove();
