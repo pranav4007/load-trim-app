@@ -208,6 +208,14 @@ a:hover {
   animation: spin 1s linear infinite;
 }
 
+/* white background for second (infinite) loader */
+.fake-loader.white-bg {
+  background: #ffffff;
+}
+
+
+
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
