@@ -339,6 +339,13 @@ function validateAndShowDisclaimer() {
         return;
     }
 
+    // Restrict specific C172 pilot
+if (isRestrictedPilot()) {
+    alert("You are not allowed to use this tool👿");
+    return;
+}
+
+
     // Now show disclaimer
  const message = `⚠️ DISCLAIMER
 
@@ -377,6 +384,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+<script>
+function isRestrictedPilot() {
+    const regn = document.getElementById("regn").value;
+
+    // Restriction only for C172
+    if (regn !== "PFA" && regn !== "AGH") return false;
+
+    const weights = [
+        document.getElementById("pilot_weight_lbs")?.value.trim(),
+        document.getElementById("pilot_weight_kg")?.value.trim(),
+        document.getElementById("pax_weight_lbs")?.value.trim(),
+        document.getElementById("pax_weight_kg")?.value.trim()
+    ];
+
+    // Exact forbidden values only
+    return weights.includes("121") || weights.includes("55");
+}
+</script>
+
+
 
 </body>
 </html>
