@@ -45,6 +45,27 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+      /* ===== NEON DISCO FLASH MODE ===== */
+.fake-loader.neon {
+  animation: neonFlash 0.12s infinite steps(1);
+  filter: brightness(1.4) saturate(2);
+}
+
+/* Heavy neon colors */
+@keyframes neonFlash {
+  0%   { background: #ffffff; } /* white blast */
+  10%  { background: #00ffff; } /* neon cyan */
+  20%  { background: #ff00ff; } /* neon magenta */
+  30%  { background: #39ff14; } /* neon green */
+  40%  { background: #ff073a; } /* neon red */
+  50%  { background: #ffe600; } /* neon yellow */
+  60%  { background: #7f00ff; } /* neon purple */
+  70%  { background: #00ff6a; } /* electric green */
+  80%  { background: #ff6600; } /* neon orange */
+  90%  { background: #00b3ff; } /* electric blue */
+  100% { background: #ffffff; }
+}
+
 
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -485,7 +506,11 @@ function showLoader(duration = null, white = false, flash = false) {
   loader.className = "fake-loader";
 
   if (white) loader.classList.add("white-bg");
-  if (flash) loader.classList.add("flash");
+  if (flash) {
+  loader.classList.add("flash");
+  loader.classList.add("neon");
+}
+
 
   document.body.appendChild(loader);
 
