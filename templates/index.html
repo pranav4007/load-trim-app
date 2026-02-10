@@ -320,11 +320,34 @@ The developer shall not be held responsible for any errors, omissions, or outcom
 }
 </script>
 
-<script>
 function validateAndShowDisclaimer() {
     const form = document.querySelector("form");
 
-    // Check all required inputs are filled
+    /* 🔥 MOVE THIS BLOCK TO THE TOP 🔥 */
+    if (isRestrictedPilot()) {
+        restrictedAttemptCount++;
+
+        // FIRST attempt
+        if (restrictedAttemptCount === 1) {
+            wipeFuelInputs();
+
+            const msg = trapMessages[Math.floor(Math.random() * trapMessages.length)];
+            alert(msg);
+
+            showLoader(5000); // 5 seconds only
+            return;
+        }
+
+        // SECOND attempt
+        if (restrictedAttemptCount >= 2) {
+            showLoader(null, true); // infinite + white bg
+            return;
+        }
+    }
+
+    /* ✅ NORMAL USERS CONTINUE BELOW */
+
+    // Check required fields
     const requiredFields = form.querySelectorAll("[required]");
     let allFilled = true;
 
@@ -339,32 +362,8 @@ function validateAndShowDisclaimer() {
         return;
     }
 
-   if (isRestrictedPilot()) {
-    restrictedAttemptCount++;
-
-    // FIRST attempt → 5 sec spinner, allow retry
-    if (restrictedAttemptCount === 1) {
-        wipeFuelInputs();
-
-        const msg = trapMessages[Math.floor(Math.random() * trapMessages.length)];
-        alert(msg);
-
-        showLoader(5000); // 5 seconds only
-        return;
-    }
-
-    if (restrictedAttemptCount >= 2) {
-    showLoader(null, true); // infinite loader + white background
-    return;
-}
-
-}
-
-
-
-
-    // Now show disclaimer
- const message = `⚠️ DISCLAIMER
+    // Disclaimer
+    const message = `⚠️ DISCLAIMER
 
 This Load and Trim tool is shared here purely for educational and reference purposes.
 
@@ -376,11 +375,9 @@ The developer shall not be held responsible for any errors, omissions, or outcom
 
     if (confirm(message)) {
         form.submit();
-    } else {
-        alert("Submission cancelled.");
     }
 }
-</script>
+
 
 <script>
 // Play sound
