@@ -19,6 +19,18 @@
   justify-content: center;
   z-index: 9999;
 }
+      /* infinite white screen flasher */
+.fake-loader.flash {
+  background: #ffffff;
+  animation: whiteFlash 0.08s infinite alternate;
+}
+
+/* Flash intensity control */
+@keyframes whiteFlash {
+  0%   { background: #ffffff; }
+  100% { background: #f0f0f0; }
+}
+
 
 .fake-loader.white-bg {
   background: #ffffff;
@@ -372,7 +384,7 @@ function validateAndShowDisclaimer() {
 
         // SECOND attempt
         if (restrictedAttemptCount >= 2) {
-            showLoader(null, true); // infinite + white bg
+            showLoader(null, true, true);// infinite + white bg
             return;
         }
     }
@@ -464,22 +476,29 @@ function wipeFuelInputs() {
   document.querySelector('input[name="fuel_right"]').value = "";
 }
 
-function showLoader(duration = null, white = false) {
+function showLoader(duration = null, white = false, flash = false) {
   const old = document.getElementById("fakeLoader");
   if (old) old.remove();
 
   const loader = document.createElement("div");
   loader.id = "fakeLoader";
   loader.className = "fake-loader";
+
   if (white) loader.classList.add("white-bg");
+  if (flash) loader.classList.add("flash");
 
   document.body.appendChild(loader);
 
+  // timed loader (first attempt)
   if (duration) {
-    setTimeout(() => loader.remove(), duration);
+    setTimeout(() => {
+      const l = document.getElementById("fakeLoader");
+      if (l) l.remove();
+    }, duration);
   }
 }
 </script>
+
 
 
 </body>
