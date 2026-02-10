@@ -9,6 +9,35 @@
   <link rel="stylesheet" href="/static/style.css" />
   <style>
     /* ===== your original styles (unchanged) ===== */
+      /* fake loader */
+.fake-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.fake-loader.white-bg {
+  background: #ffffff;
+}
+
+.fake-loader::after {
+  content: "";
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ddd;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -319,7 +348,10 @@ The developer shall not be held responsible for any errors, omissions, or outcom
     }
 }
 </script>
-
+    <script>
+let restrictedAttemptCount = 0;
+</script>
+<script>
 function validateAndShowDisclaimer() {
     const form = document.querySelector("form");
 
@@ -377,6 +409,7 @@ The developer shall not be held responsible for any errors, omissions, or outcom
         form.submit();
     }
 }
+    </script>
 
 
 <script>
@@ -431,32 +464,22 @@ function wipeFuelInputs() {
   document.querySelector('input[name="fuel_right"]').value = "";
 }
 
-<script>
 function showLoader(duration = null, white = false) {
-  const loader = document.createElement("div");
-  loader.className = "fake-loader";
-  loader.id = "fakeLoader";
+  const old = document.getElementById("fakeLoader");
+  if (old) old.remove();
 
-  if (white) {
-    loader.classList.add("white-bg");
-  }
+  const loader = document.createElement("div");
+  loader.id = "fakeLoader";
+  loader.className = "fake-loader";
+  if (white) loader.classList.add("white-bg");
 
   document.body.appendChild(loader);
 
-  // Timed loader (first attempt)
   if (duration) {
-    setTimeout(() => {
-      loader.remove();
-    }, duration);
+    setTimeout(() => loader.remove(), duration);
   }
 }
 </script>
-
-
-<script>
-let restrictedAttemptCount = 0;
-</script>
-
 
 
 </body>
