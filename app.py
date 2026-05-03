@@ -157,6 +157,8 @@ def generate_trim_sheet_da40ng(regn, pilot_weight, pax_weight, pax1_weight, pax2
             ws["F2"] = "VT-PRH"
         elif regn == "PFB":
             ws["F2"] = "VT-PFB"
+       elif regn == "PFC":
+            ws["F2"] = "VT-PFC"
     
         # Update weights - CORRECTED: D11-D16 to E11-E16
         ws["E11"] = round(float(pilot_weight or 0), 2)
