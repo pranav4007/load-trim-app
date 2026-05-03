@@ -314,7 +314,7 @@ def index():
                 data, error = generate_trim_sheet_152(regn, pilot_weight, pax_weight, fuel_left, fuel_right)
             elif regn in ["AGH", "PFA"]:
                 data, error = generate_trim_sheet_172(regn, pilot_weight, pax_weight, fuel_left, fuel_right)
-            elif regn in ["PM", "PRH", "PFB"]:
+            elif regn in ["PM", "PRH", "PFB", "PFC"]:
                 data, error = generate_trim_sheet_da40ng(
                     regn, pilot_weight, pax_weight, pax1_weight, pax2_weight,
                     baggage_fwd, baggage_aft, fuel_left, fuel_right
