@@ -176,6 +176,9 @@ def generate_trim_sheet_da40ng(regn, pilot_weight, pax_weight, pax1_weight, pax2
         elif regn == "PFB":
             ws["E9"] = 2058
             ws["F9"] = 95.91
+       elif regn == "PFC":
+            ws["E9"] = 2063.75
+            ws["F9"] = 95.26
 
         # Safe calculation function
         def safe_multiply(a, b):
