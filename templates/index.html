@@ -244,6 +244,7 @@
       <option value="PM">VT-PMA</option>
       <option value="PRH">VT-PRH</option>
       <option value="PFB">VT-PFB</option>
+      <option value="PFC">VT-PFC</option>
     </select>
 
     <label>Pilot Weight:</label>
@@ -293,7 +294,7 @@
   const da40Fields = document.getElementById('da40-fields');
 
   // Show DA40NG-specific fields for all DA40 aircraft
-  if (regn === 'PM' || regn === 'PRH' || regn === 'PFB') {
+  if (regn === 'PM' || regn === 'PRH' || regn === 'PFC' || regn === 'PFB') {
     da40Fields.style.display = 'block';
   } else {
     da40Fields.style.display = 'none';
