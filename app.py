@@ -87,6 +87,9 @@ def generate_trim_sheet_172(regn, pilot_weight, pax_weight, fuel_left, fuel_righ
         elif regn == "PFA":
             ws["D2"] = "VT-PFA"
             c5, e5 = 1701, 38.79
+        elif regn == "BSB":
+            ws["D2"] = "VT-BSB"
+            c5, e5 = 1696, 40.30
         else:
             c5, e5 = 0, 0
 
@@ -312,7 +315,7 @@ def index():
 
             if regn in ["IAU", "NNN", "PSS"]:
                 data, error = generate_trim_sheet_152(regn, pilot_weight, pax_weight, fuel_left, fuel_right)
-            elif regn in ["AGH", "PFA"]:
+            elif regn in ["AGH", "PFA", "BSB"]:
                 data, error = generate_trim_sheet_172(regn, pilot_weight, pax_weight, fuel_left, fuel_right)
             elif regn in ["PM", "PRH", "PFB", "PFC"]:
                 data, error = generate_trim_sheet_da40ng(
